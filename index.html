@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Crystal Collector</title>
+    <link rel="stylesheet" href="assets/css/reset.css" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <script src="assets/javascript/game.js" type="text/javascript"></script>
+  </head>
+
+  <body>
+    <div class="container-fluid text-center">
+      <h1 class="display-1">Crystals Collector!</h1>
+    </div>
+
+    <div class="lead card col-md-6 offset-md-3" id="instructions">
+      <p>You will be given a random number at the start of this game.</p>
+      <p>
+        There are four crystals below. Each crystal has been assigned a random
+        number. By clicking these crystals you will add those points to your
+        total score.
+      </p>
+      <p>
+        You will win if you add up to your target number. You will lose if your
+        total score goes above your target number.
+      </p>
+      <p>
+        The value of each crystal is hidden until you click on it.
+      </p>
+      <P>
+        Each time the game starts the crystals will be assigned a new random
+        number.
+      </P>
+    </div>
+
+    <div class ="row align-items-center">
+      <div class="col" id="targetNumber">
+        <h2 class=" text-center card">Target number: <div id="number-to-guess"></div></h2>
+      </div>
+
+      <div id="WinCounter" class="col card">
+        <div>
+          <h3 class=" text-center ">
+            Total wins:
+            <div id="wins"></div>
+          </h3>
+        </div>
+        <div>
+          <h3 class=" text-center ">
+            Total losses:
+            <div id="losses"></div>
+          </h3>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid text-center">
+    <div id="crystals" ></div>
+    </div>
+
+    <div id="totalScore" class="container-fluid">
+      <h2 class=" text-center card">
+        Your total score is:
+        <div id="score"></div>
+      </h2>
+    </div>
+
+    <!-- JAVASCRIPT  -->
+    <!-- ========================================= -->
+    <script
+      type="text/javascript"
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"
+    ></script>
+
+    <script type="text/javascript">
+      // create variables that count wins & losses
+      var wins = 0;
+      var losses = 0;
+
+      // create target number and crystal value variables
+      var targetNumber;
+      var numberOptions;
+
+      // select random number between 19 and 120 as target
+      targetNumber = Math.floor(Math.random() * (120 - 19 + 1) + 19);
+
+      // set each crystal´s value to a random number between 1 and 12
+      numberOptions = [
+        Math.floor(Math.random() * 12 + 1),
+        Math.floor(Math.random() * 12 + 1),
+        Math.floor(Math.random() * 12 + 1),
+        Math.floor(Math.random() * 12 + 1)
+      ];
+
+      //display target number
+      $("#number-to-guess").text(targetNumber);
+
+      // set score counter to 0
+      var counter = 0;
+
+      // Next we create a for loop to create crystals for every numberOption.
+      for (var i = 0; i < numberOptions.length; i++) {
+        // For each iteration, we will create an imageCrystal
+        var imageCrystal = $("<img>");
+
+        // First each crystal will be given the class ".crystal-image".
+        // This will allow the CSS to take effect.
+        imageCrystal.addClass("crystal-image");
+
+        // Each imageCrystal will be given a src link to the crystal image
+        imageCrystal.attr(
+          "src",
+          "http://cdn.playbuzz.com/cdn/35910209-2844-45c0-b099-f4d82878d54f/00261fda-4062-4096-81fd-8cf96b9034e8.jpg"
+        );
+
+        // Each imageCrystal will be given a data attribute called data-crystalValue.
+        // This data attribute will be set equal to the array value.
+        imageCrystal.attr("data-crystalvalue", numberOptions[i]);
+
+        // Each crystal image (with all it classes and attributes) will get added to the page.
+        $("#crystals").append(imageCrystal);
+      }
+
+      // Our click event applies to every single crystal on the page.
+      $(".crystal-image").on("click", function() {
+        // Determining the crystal's value requires us to extract the value from the data attribute.
+        // Using the $(this) keyword specifies that we should be extracting the crystal value of the clicked crystal.
+        // Using the .attr("data-crystalvalue") allows us to grab the value out of the "data-crystalvalue" attribute.
+        // Since attributes on HTML elements are strings, we must convert it to an integer before adding to the counter
+
+        var crystalValue = $(this).attr("data-crystalvalue");
+        crystalValue = parseInt(crystalValue);
+        // We then add the crystalValue to the user's "counter" which is a global variable.
+        // Every click, from every crystal adds to the global counter.
+        counter += crystalValue;
+
+        // function to reset the target number, crystal values and score
+        function gameReset() {
+          // select random number between 19 and 120 as target
+          targetNumber = Math.floor(Math.random() * (120 - 19 + 1) + 19);
+
+          // set each crystal´s value to a random number between 1 and 12
+          numberOptions = [
+            Math.floor(Math.random() * 12 + 1),
+            Math.floor(Math.random() * 12 + 1),
+            Math.floor(Math.random() * 12 + 1),
+            Math.floor(Math.random() * 12 + 1)
+          ];
+
+          //display target number
+          $("#number-to-guess").text(targetNumber);
+
+          // set score counter to 0
+          counter = 0;
+        }
+
+        //alert win or lose
+        if (counter === targetNumber) {
+          alert("You win!");
+          wins++;
+          gameReset();
+        } else if (counter >= targetNumber) {
+          alert("You lose!!");
+          losses++;
+          gameReset();
+        }
+
+        // All of the same game win-lose logic applies. So the rest remains unchanged.
+        $("#score").html(counter);
+
+        $("#wins").html(wins);
+        $("#losses").html(losses);
+      });
+    </script>
+  </body>
+</html>
