@@ -1,9 +1,22 @@
 .crystal-image {
-    width: 300px;
-    height: 300px;
+    width: 25%;
+    height: auto;
   }
 
   
   body { 
-      background-color: pink; 
+      background-color: #BACDD9; 
+      color: #587799;
+}
+
+h1 {
+  color: #2C466A;
+}
+
+.card {
+  background-color: #ECF5FA ;
+}
+
+#targetCard {
+  height: 200%;
 }

@@ -6,7 +6,8 @@ var losses = 0;
 var targetNumber;
 var numberOptions = [];
 
-//var numberOptions;
+$("#wins").html(wins);
+$("#losses").html(losses);
 
 // select random number between 19 and 120 as target
 targetNumber = Math.floor(Math.random() * (120 - 19 + 1) + 19);
@@ -24,30 +25,32 @@ $("#number-to-guess").text(targetNumber);
 // set score counter to 0
 var counter = 0;
 
-function assignValue(){
-// Next we create a for loop to create crystals for every numberOption.
-for (var i = 0; i < numberOptions.length; i++) {
-  // For each iteration, we will create an imageCrystal
-  var imageCrystal = $("<img>");
+$("#score").html(counter);
 
-  // First each crystal will be given the class ".crystal-image".
-  // This will allow the CSS to take effect.
-  imageCrystal.addClass("crystal-image");
+function assignValue() {
+  // Next we create a for loop to create crystals for every numberOption.
+  for (var i = 0; i < numberOptions.length; i++) {
+    // For each iteration, we will create an imageCrystal
+    var imageCrystal = $("<img>");
 
-  // Each imageCrystal will be given a src link to the crystal image
-  imageCrystal.attr(
-    "src",
-    "https://www.pngkey.com/png/full/95-957028_28-collection-of-crystal-drawing-png-crystal-drawing.png"
-  );
+    // First each crystal will be given the class ".crystal-image".
+    // This will allow the CSS to take effect.
+    imageCrystal.addClass("crystal-image");
 
-  // Each imageCrystal will be given a data attribute called data-crystalValue.
-  // This data attribute will be set equal to the array value.
-  imageCrystal.attr("data-crystalvalue", numberOptions[i]);
+    // Each imageCrystal will be given a src link to the crystal image
+    imageCrystal.attr(
+      "src",
+      "https://www.stockvault.net/data/2018/06/08/252434/preview16.jpg"
+    );
 
-  // Each crystal image (with all it classes and attributes) will get added to the page.
-  $("#crystals").append(imageCrystal);
+    // Each imageCrystal will be given a data attribute called data-crystalValue.
+    // This data attribute will be set equal to the array value.
+    imageCrystal.attr("data-crystalvalue", numberOptions[i]);
+
+    // Each crystal image (with all it classes and attributes) will get added to the page.
+    $("#crystals").append(imageCrystal);
+  }
 }
-};
 assignValue();
 
 // Our click event applies to every single crystal on the page.
@@ -62,6 +65,7 @@ $(document).on("click", ".crystal-image", function() {
   // We then add the crystalValue to the user's "counter" which is a global variable.
   // Every click, from every crystal adds to the global counter.
   counter += crystalValue;
+  $("#score").html(counter);
 
   // function to reset the target number, crystal values and score
   function gameReset() {
@@ -80,11 +84,13 @@ $(document).on("click", ".crystal-image", function() {
 
     // set score counter to 0
     counter = 0;
-    console.log(numberOptions);
 
     $("#crystals").empty();
 
     assignValue();
+
+    // set score counter to 0
+    counter = 0;
   }
 
   //alert win or lose
@@ -97,10 +103,4 @@ $(document).on("click", ".crystal-image", function() {
     losses++;
     gameReset();
   }
-
-  // All of the same game win-lose logic applies. So the rest remains unchanged.
-  $("#score").html(counter);
-
-  $("#wins").html(wins);
-  $("#losses").html(losses);
 });
