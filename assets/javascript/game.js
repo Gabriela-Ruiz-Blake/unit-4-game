@@ -82,9 +82,6 @@ $(document).on("click", ".crystal-image", function() {
     //display target number
     $("#number-to-guess").text(targetNumber);
 
-    // set score counter to 0
-    counter = 0;
-
     $("#crystals").empty();
 
     assignValue();
@@ -103,4 +100,7 @@ $(document).on("click", ".crystal-image", function() {
     losses++;
     gameReset();
   }
+  
+  $("#wins").html(wins);
+$("#losses").html(losses);
 });
